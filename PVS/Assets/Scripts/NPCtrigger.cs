@@ -16,11 +16,11 @@ public class NPCtrigger : MonoBehaviour
     {
         if (touching == true)
         {
-            Debug.Log("touching = " + touching);
+            //Debug.Log("touching = " + touching);
         }
         else
         {
-            Debug.Log("false");
+            //Debug.Log("false");
         }
     }
      void OnTriggerEnter2D(Collider2D other)
@@ -35,5 +35,10 @@ public class NPCtrigger : MonoBehaviour
         {
             touching = false;
         }
+    }
+
+    public void setTouching(bool touch)
+    {
+        touching = touch;
     }
 }

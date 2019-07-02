@@ -8,6 +8,7 @@ public class playerController : MonoBehaviour
     private int position;
     public bool talking;
     private bool touching;
+    private NPCtrigger triggerfortouching;
 
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     private Vector3 velocity = Vector3.zero;
@@ -16,6 +17,7 @@ public class playerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        triggerfortouching = GetComponent<NPCtrigger>();
         talking = false;
         touching = false;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
@@ -24,6 +26,8 @@ public class playerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log(touching);
+
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
         Vector3 targetVelocity = new Vector2(moveHorizontal * 3f, moveVertical * 3f);
@@ -74,14 +78,7 @@ public class playerController : MonoBehaviour
         {
             touching = false;
         }
-        if (touching == true)
-        {
-            Debug.Log(touching);
-        }
-        else
-        {
-            Debug.Log(touching);
-        }
+
 
     }
 
@@ -92,14 +89,26 @@ public class playerController : MonoBehaviour
         {
             touching = true;
         }
-        else
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("NPC"))
         {
             touching = false;
         }
+
     }
 
     public bool gettalking()
     {
         return talking;
+    }
+
+    public void setTalking(bool talk)
+    {
+        this.talking = talk;
+        triggerfortouching.setTouching(false);
+        Debug.Log("Setting Talking to false");
     }
 }
