@@ -7,8 +7,10 @@ public class playerController : MonoBehaviour
     Rigidbody2D rb2d;
     private int position;
     public bool talking;
-    private bool touching;
-    private NPCtrigger triggerfortouching;
+    public bool touching;
+    GameObject tamiyo;
+    BoxCollider2D bc2d;
+    public bool equipped;
 
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     private Vector3 velocity = Vector3.zero;
@@ -17,7 +19,6 @@ public class playerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        triggerfortouching = GetComponent<NPCtrigger>();
         talking = false;
         touching = false;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
@@ -43,59 +44,50 @@ public class playerController : MonoBehaviour
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-
-
-
-        }
+        }  
         else if ((transform.localScale.x > 0) && (walkLeft == true))
         {
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-            
         }
 
         if (touching == true && Input.GetKeyDown(KeyCode.Return))
         {
             talking = true;
-
         }
+
         if (talking == true)
         {
-
             rb2d.bodyType = RigidbodyType2D.Static;
         }
         else if (talking == false)
         {
             rb2d.bodyType = RigidbodyType2D.Dynamic;
         }
-
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            touching = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            touching = false;
-        }
-
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-     
         if (other.gameObject.CompareTag("NPC"))
         {
             touching = true;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("NPC"))
         {
             touching = false;
+            tamiyo = GameObject.FindGameObjectWithTag("NPC");
+            bc2d = tamiyo.GetComponent<BoxCollider2D>();
+           // bc2d.enabled = false;
+        }
+        if (other.gameObject.CompareTag("pick-up"))
+        {
+            equipped = true;
+            Debug.Log(equipped);
         }
 
     }
@@ -108,7 +100,10 @@ public class playerController : MonoBehaviour
     public void setTalking(bool talk)
     {
         this.talking = talk;
-        triggerfortouching.setTouching(false);
-        Debug.Log("Setting Talking to false");
+        //Debug.Log("Setting Talking to false");
+    }
+    public bool getEquipped()
+    {
+        return equipped;
     }
 }

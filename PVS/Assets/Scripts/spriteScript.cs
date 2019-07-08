@@ -10,6 +10,7 @@ public class spriteScript : MonoBehaviour
     private GameObject player;
     private playerController playerController;
     bool talking = false;
+    private textbarScript textbar;
 
 
     // Start is called before the first frame update
@@ -22,6 +23,7 @@ public class spriteScript : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<playerController>();
         talking = playerController.talking;
+       // textbar = GameObject.FindGameObjectWithTag("textbar");
   
     }
 
@@ -41,7 +43,12 @@ public class spriteScript : MonoBehaviour
             SR.sortingLayerName = "Default";
             Debug.Log("Setting sorting layer back to default");
         }
+      
+        /*  if ()
+        {
 
+        }
+        */
     }
 
 
