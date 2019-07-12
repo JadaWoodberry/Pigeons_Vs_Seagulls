@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class transitionoutsidescript : MonoBehaviour
+
+public class IntroButtonScript : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -13,6 +15,11 @@ public class transitionoutsidescript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+    }
+
+    private void OnMouseDown()
+    {
+        SceneManager.LoadScene("IntroScene", LoadSceneMode.Single);
     }
 }
+

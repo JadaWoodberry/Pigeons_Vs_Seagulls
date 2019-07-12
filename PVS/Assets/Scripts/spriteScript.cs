@@ -41,14 +41,9 @@ public class spriteScript : MonoBehaviour
         else if (talking == false)
         {
             SR.sortingLayerName = "Default";
-            Debug.Log("Setting sorting layer back to default");
         }
       
-        /*  if ()
-        {
-
-        }
-        */
+       
     }
 
 

@@ -16,6 +16,7 @@ public class textbarScript : MonoBehaviour
     private int counter;
     public bool hiding;
     bool equipped = false;
+    public bool doneTalking;
     // Start is called before the first frame update
     void Start()
     {
@@ -28,13 +29,14 @@ public class textbarScript : MonoBehaviour
         talking = playerController.talking;
         textarray = new string[6];
         textarray[0] = "hey";
-        textarray[1] = "use the arrow keys to move";
-        textarray[2] = "talk to people";
-        textarray[3] = "if you find a key bring it back to me";
-        textarray[4] = "then you're free to do whatever, leave lol";
+        textarray[1] = "Use the arrow keys to move.";
+        textarray[2] = "Talk to people.";
+        textarray[3] = "If you find a key bring it back to me.";
+        textarray[4] = "then you're free to do whatever, leave. lol.";
         textarray[5] = " ";
         counter = 0;
-        hiding = true;
+        doneTalking = false;
+        //hiding = true;
     }
 
     // Update is called once per frame
@@ -60,7 +62,6 @@ public class textbarScript : MonoBehaviour
                // gameObject.SetActive(false);
               //  textbox.gameObject.SetActive(false);
                 counter = 0;
-                Debug.Log("count" + counter);
                 SR.sortingLayerName ="Default";
                 hiding = true;
             }
@@ -74,7 +75,6 @@ public class textbarScript : MonoBehaviour
 
         if (talking == true && equipped == true)
         {
-            Debug.Log("Start different text");
             textarray = new string[5];
             textarray[0] = "Thanks! That'll come in handy. You're free to leave";
             textarray[1] = "Oh, where it is?";
@@ -86,9 +86,13 @@ public class textbarScript : MonoBehaviour
                 playerController.setTalking(false);
                 talking = false;
                 counter = 0;
-                Debug.Log("count" + counter);
                 SR.sortingLayerName = "Default";
                 hiding = true;
+                GameObject.FindGameObjectWithTag("NPC").SetActive(false);
+                GameObject.Find("Player").GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
+                GameObject.Find("Player").GetComponent<playerController>().talking = false;
+                doneTalking = true;
+                gameObject.SetActive(false);
             }
         }
 

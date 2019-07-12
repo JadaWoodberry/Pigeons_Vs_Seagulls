@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class playerController : MonoBehaviour
     GameObject tamiyo;
     BoxCollider2D bc2d;
     public bool equipped;
+    public bool given;
+    public bool fadeIn;
+    public bool fadeOut;
+    textbarScript tbs;
 
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     private Vector3 velocity = Vector3.zero;
@@ -22,12 +27,15 @@ public class playerController : MonoBehaviour
         talking = false;
         touching = false;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
+        given = false;
+        tbs = GameObject.Find("tamiyotextbar").GetComponent<textbarScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log(touching);
+        //Debug.Log(given);
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -52,7 +60,8 @@ public class playerController : MonoBehaviour
             transform.localScale = theScale;
         }
 
-        if (touching == true && Input.GetKeyDown(KeyCode.Return))
+        if (touching == true && Input.GetKeyDown(KeyCode.Return) && 
+            GameObject.Find("tamiyotextbar").GetComponent<textbarScript>().doneTalking == false)
         {
             talking = true;
         }
@@ -65,6 +74,15 @@ public class playerController : MonoBehaviour
         {
             rb2d.bodyType = RigidbodyType2D.Dynamic;
         }
+
+        if (given == true)
+        {
+            fadeOut = true;
+            SceneManager.LoadScene("OutsideArcadeScene", LoadSceneMode.Single);
+
+        }
+
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -73,13 +91,21 @@ public class playerController : MonoBehaviour
         {
             touching = true;
         }
+        if (other.gameObject.CompareTag("LT"))
+        {
+            if (equipped == true)
+            {
+                given = true;
+            }
+        }
+
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("NPC"))
         {
-            touching = false;
+            touching = true;
             tamiyo = GameObject.FindGameObjectWithTag("NPC");
             bc2d = tamiyo.GetComponent<BoxCollider2D>();
            // bc2d.enabled = false;
@@ -87,7 +113,6 @@ public class playerController : MonoBehaviour
         if (other.gameObject.CompareTag("pick-up"))
         {
             equipped = true;
-            Debug.Log(equipped);
         }
 
     }
@@ -106,4 +131,9 @@ public class playerController : MonoBehaviour
     {
         return equipped;
     }
+    public bool getfadeOut()
+    {
+        return fadeOut;
+    }
+
 }
