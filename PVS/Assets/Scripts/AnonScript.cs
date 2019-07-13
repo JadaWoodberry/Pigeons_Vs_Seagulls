@@ -11,11 +11,11 @@ public class AnonScript : MonoBehaviour
     private GameObject player;
     private OutdoorPlayerController playerController;
     bool talking = false;
-    bool equipped = false;
     GameObject Sns;
     OutdoorScript ODC;
     private bool anTalking;
-    // Start is called before the first frame update
+    private OutdoorScript outdoorScript;
+
     void Start()
     {
         SR = GetComponent<SpriteRenderer>();
@@ -27,25 +27,20 @@ public class AnonScript : MonoBehaviour
         Sns = GameObject.FindGameObjectWithTag("NPC");
         ODC = Sns.GetComponent<OutdoorScript>();
         anTalking = ODC.anTalking;
-
+        outdoorScript = GameObject.Find("snssprite").GetComponent<OutdoorScript>();
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         talking = playerController.talking;
-        //equipped = playerController.getEquipped();
-        anTalking = ODC.getanTalking();
-
-
-        if (talking == true && Input.GetKeyDown(KeyCode.Return))
+        if (talking == true && Input.GetKeyDown(KeyCode.Return) && outdoorScript.anTalking == true)
         {
             SR.sortingLayerName = "Textbars";
             transform.position = new Vector2(tform.position.x, tform.position.y - 3.8f);
 
         }
-        else if (talking == false)
+       if (outdoorScript.anTalking == false)
         {
             SR.sortingLayerName = "Default";
         }

@@ -21,7 +21,6 @@ public class OutdoorScript : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<OutdoorPlayerController>();
-        //talking = playerController.talking;
         counter = 0;
 
         array = new string[39];
@@ -81,10 +80,9 @@ public class OutdoorScript : MonoBehaviour
             }
             else if (counter >= 39)
             {
-                //playerController.setTalking(false);
                 talking = false;
+                sTalking = false;
                 textbox.text = "";
-                //counter = 0;
             }
         }
         if (counter == 2 || counter == 3 || counter == 5 || counter == 8 ||
@@ -92,15 +90,15 @@ public class OutdoorScript : MonoBehaviour
          counter == 26 || counter == 28 || counter == 30 || counter == 32 ||
           counter == 34 ||counter == 36 || counter == 38)
         {
-            Debug.Log("Sunburn Talking");
+            //Debug.Log("Sunburn Talking");
             sTalking = true;
             aTalking = false;
             uTalking = false;
             anTalking = false;
         }
-        else if (counter == 1 || counter == 4)
+        else if (counter == 0 || counter == 1 || counter == 4)
         {
-            Debug.Log("Anon Talking");
+            //Debug.Log("Anon Talking");
             sTalking = false;
             aTalking = false;
             uTalking = false;
@@ -110,7 +108,7 @@ public class OutdoorScript : MonoBehaviour
          counter == 17 || counter == 20 || counter == 22 || counter == 24 || counter == 25 ||
              counter == 27 || counter == 31 || counter == 33 || counter == 35)
         {
-            Debug.Log("Sruffie Talking");
+            //Debug.Log("Sruffie Talking");
             sTalking = false;
             aTalking = false;
             uTalking = true;
@@ -119,29 +117,13 @@ public class OutdoorScript : MonoBehaviour
         else if (counter == 7 || counter == 11 || counter == 12 || counter == 14 || counter == 16 ||
          counter == 21 || counter == 25 || counter == 29 || counter == 37)
         {
-            Debug.Log("Srapie Talking");
+            //Debug.Log("Srapie Talking");
             sTalking = false;
             aTalking = true;
             uTalking = false;
             anTalking = false;
         }
 
-    }
-    public bool getsTalking()
-    {
-        return sTalking;
-    }
-    public bool getaTalking()
-    {
-        return aTalking;
-    }
-    public bool getuTalking()
-    {
-        return uTalking;
-    }
-    public bool getanTalking()
-    {
-        return anTalking;
     }
 
 }

@@ -22,7 +22,7 @@ public class OutdoorPlayerController : MonoBehaviour
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        Vector3 targetVelocity = new Vector2(moveHorizontal * 3f, moveVertical * 3f);
+        Vector3 targetVelocity = new Vector2(moveHorizontal * 15f, moveVertical * 15f);
         rb2d.velocity = Vector3.SmoothDamp(rb2d.velocity, targetVelocity, ref velocity, m_MovementSmoothing);
 
         bool walkLeft = Input.GetKeyDown(KeyCode.LeftArrow);

@@ -2,44 +2,42 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnonSprite : MonoBehaviour
+public class SunburnTextBar : MonoBehaviour
 {
     private SpriteRenderer SR;
     private GameObject camera;
     private Transform tform;
-
+    private GameObject player;
+    private OutdoorPlayerController playerController;
+    bool talking = false;
     GameObject Sns;
     OutdoorScript ODC;
     private bool anTalking;
-
-    private GameObject player;
-    private OutdoorPlayerController playerController;
     private OutdoorScript outdoorScript;
-    bool talking;
-    // Start is called before the first frame update
+
     void Start()
     {
         SR = GetComponent<SpriteRenderer>();
         SR.sortingLayerName = "Default";
         camera = GameObject.FindGameObjectWithTag("MainCamera");
         tform = camera.GetComponent<Transform>();
-        outdoorScript = GameObject.Find("snssprite").GetComponent<OutdoorScript>();
         player = GameObject.FindGameObjectWithTag("Player");
         playerController = player.GetComponent<OutdoorPlayerController>();
-        talking = playerController.talking;
+        Sns = GameObject.FindGameObjectWithTag("NPC");
+        ODC = Sns.GetComponent<OutdoorScript>();
+        anTalking = ODC.anTalking;
+        outdoorScript = GameObject.Find("snssprite").GetComponent<OutdoorScript>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         talking = playerController.talking;
-
-        if (talking == true && Input.GetKeyDown(KeyCode.Return) && outdoorScript.anTalking == true)
+        if (talking == true && outdoorScript.sTalking == true)
         {
             SR.sortingLayerName = "Textbars";
-            transform.position = new Vector2(tform.position.x - 8.5f, tform.position.y - 2.1f);
+            transform.position = new Vector2(tform.position.x, tform.position.y - 3.8f);
         }
-        if (outdoorScript.anTalking == false)
+        if (outdoorScript.sTalking == false)
         {
             SR.sortingLayerName = "Default";
         }
