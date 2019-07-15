@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class playerController : MonoBehaviour
 {
     Rigidbody2D rb2d;
     private int position;
     public bool talking;
-    private bool touching;
-    private NPCtrigger triggerfortouching;
+    public bool touching;
+    GameObject tamiyo;
+    BoxCollider2D bc2d;
+    public bool equipped;
+    public bool given;
+    public bool fadeIn;
+    public bool fadeOut;
+    textbarScript tbs;
 
     [Range(0, .3f)] [SerializeField] private float m_MovementSmoothing = .05f;  // How much to smooth out the movement
     private Vector3 velocity = Vector3.zero;
@@ -17,16 +24,18 @@ public class playerController : MonoBehaviour
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
-        triggerfortouching = GetComponent<NPCtrigger>();
         talking = false;
         touching = false;
         rb2d.bodyType = RigidbodyType2D.Dynamic;
+        given = false;
+        tbs = GameObject.Find("tamiyotextbar").GetComponent<textbarScript>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log(touching);
+        //Debug.Log(given);
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -43,26 +52,22 @@ public class playerController : MonoBehaviour
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-
-
-
-        }
+        }  
         else if ((transform.localScale.x > 0) && (walkLeft == true))
         {
             Vector3 theScale = transform.localScale;
             theScale.x *= -1;
             transform.localScale = theScale;
-            
         }
 
-        if (touching == true && Input.GetKeyDown(KeyCode.Return))
+        if (touching == true && Input.GetKeyDown(KeyCode.Return) && 
+            GameObject.Find("tamiyotextbar").GetComponent<textbarScript>().doneTalking == false)
         {
             talking = true;
-
         }
+
         if (talking == true)
         {
-
             rb2d.bodyType = RigidbodyType2D.Static;
         }
         else if (talking == false)
@@ -70,13 +75,11 @@ public class playerController : MonoBehaviour
             rb2d.bodyType = RigidbodyType2D.Dynamic;
         }
 
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (given == true)
         {
-            touching = false;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            touching = false;
+            fadeOut = true;
+            SceneManager.LoadScene("OutsideArcadeScene", LoadSceneMode.Single);
+
         }
 
 
@@ -84,18 +87,32 @@ public class playerController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-     
         if (other.gameObject.CompareTag("NPC"))
         {
             touching = true;
         }
+        if (other.gameObject.CompareTag("LT"))
+        {
+            if (equipped == true)
+            {
+                given = true;
+            }
+        }
+
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("NPC"))
         {
-            touching = false;
+            touching = true;
+            tamiyo = GameObject.FindGameObjectWithTag("NPC");
+            bc2d = tamiyo.GetComponent<BoxCollider2D>();
+           // bc2d.enabled = false;
+        }
+        if (other.gameObject.CompareTag("pick-up"))
+        {
+            equipped = true;
         }
 
     }
@@ -108,7 +125,15 @@ public class playerController : MonoBehaviour
     public void setTalking(bool talk)
     {
         this.talking = talk;
-        triggerfortouching.setTouching(false);
-        Debug.Log("Setting Talking to false");
+        //Debug.Log("Setting Talking to false");
     }
+    public bool getEquipped()
+    {
+        return equipped;
+    }
+    public bool getfadeOut()
+    {
+        return fadeOut;
+    }
+
 }

@@ -8,6 +8,8 @@ TagManager:
   - trigger
   - Background
   - detector
+  - pick-up
+  - LT
   layers:
   - Default
   - TransparentFX
@@ -17,8 +19,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - video
+  - textbar
   - 
   - 
   - 
@@ -50,6 +52,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 2844181409
+    locked: 0
+  - name: NPC
+    uniqueID: 1910818275
     locked: 0
   - name: Player
     uniqueID: 597235961
